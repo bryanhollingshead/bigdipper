@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import HostingChoice from '../components/HostingChoice.astro';
 import { RAILWAY_MONTHLY, RAILWAY_TEMPLATE_URL } from '../lib/config';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -11,6 +12,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
 
   <div class="narrow">
+    <HostingChoice />
+
     <section>
       <h2>Before you start</h2>
       <ul class="prose">

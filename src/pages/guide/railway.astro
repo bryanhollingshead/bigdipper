@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import HostingChoice from '../../components/HostingChoice.astro';
 import { RAILWAY_MONTHLY } from '../../lib/config';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -8,6 +9,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="kicker">Guide</div>
     <h1>Little Dipper on Railway</h1>
     <p class="lede">Everything from signing up to your first connection, and what to do when something doesn’t work. The short version is on <a href={`${base}/get-started`}>Get your Little Dipper</a>.</p>
+
+    <HostingChoice />
 
     <h2>1. Sign up for Railway</h2>
     <p>Railway is the hosting company that runs your Little Dipper. Your Little Dipper costs {RAILWAY_MONTHLY} a month, paid to Railway with your own card, and the server lives in your account.</p>
