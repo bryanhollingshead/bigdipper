@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import { RAILWAY_MONTHLY } from '../../lib/config';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Railway guide · Big Dipper" description="Step by step: set up, claim, update and back up your Little Dipper on Railway.">
+  <article class="narrow prose" style="padding-top: 40px">
+    <div class="kicker">Guide</div>
+    <h1>Little Dipper on Railway</h1>
+    <p class="lede">Everything from signing up to your first connection, and what to do when something doesn’t work. The short version is on <a href={`${base}/get-started`}>Get your Little Dipper</a>.</p>
+
+    <h2>1. Sign up for Railway</h2>
+    <p>Railway is the hosting company that runs your Little Dipper. Your Little Dipper costs {RAILWAY_MONTHLY} a month, paid to Railway with your own card, and the server lives in your account.</p>
+
+    <h2>2. Set up your Little Dipper</h2>
+    <p>Use the <strong>Deploy on Railway</strong> button on <a href={`${base}/get-started`}>Get your Little Dipper</a>. Railway fills in everything Little Dipper needs, including two secrets made just for you:</p>
+    <ul>
+      <li><code>LD_CLAIM_TOKEN</code>: your claim code. It proves you’re the one who set this server up.</li>
+      <li><code>LD_KEYSTORE_KEY</code>: protects your Little Dipper’s keys. Never share it or change it.</li>
+    </ul>
+    <p>Wait until Railway shows the deployment as active, about two minutes.</p>
+
+    <h2>3. Find your address</h2>
+    <p>Open your Little Dipper in Railway, then <strong>Settings → Networking</strong>. The address ends in <code>.up.railway.app</code>. Bookmark it: it’s where you’ll use your Little Dipper from now on.</p>
+
+    <h2>4. Claim it</h2>
+    <ol>
+      <li>Open your address. Little Dipper says it’s waiting for its owner.</li>
+      <li>In Railway, open <strong>Variables</strong>, reveal <code>LD_CLAIM_TOKEN</code> and copy it.</li>
+      <li>Paste it into Little Dipper and continue. The code works until you claim, so there’s no rush.</li>
+      <li>Enter your name and email, then <strong>create a passkey</strong>: your fingerprint, face or device PIN is how you sign in.</li>
+      <li><strong>Save your recovery codes</strong> somewhere safe, like a password manager. They’re how you get in if you lose your device.</li>
+    </ol>
+
+    <h2>5. Save your recovery kit</h2>
+    <p>Little Dipper asks for this on its Home page. The kit, with a passphrase you choose, lets you rebuild your Little Dipper on a new server if this one is ever lost. Keep the passphrase separate from the file. Nobody can reset it.</p>
+
+    <h2>6. Updates</h2>
+    <p>Railway installs new Little Dipper versions for you, overnight, after backing up your data. You can skip a version in Railway if you’d rather wait.</p>
+
+    <h2>7. Keep a copy at home</h2>
+    <p>Little Dipper reminds you each week to save a backup to your computer, or saves it automatically to a folder you choose (Chrome and Edge). With a backup and your recovery kit, you can move to another host or a device at home whenever you like.</p>
+    <p><strong>Before you stop paying Railway</strong>, download a backup. When Railway shuts the server down, its data goes with it.</p>
+
+    <h2>8. Connect with someone</h2>
+    <p>In Little Dipper, open <strong>Contacts → Add</strong> and send an invite link to a friend who has a Little Dipper. You choose exactly what each person can see, and can change it any time.</p>
+
+    <h2>When something doesn’t work</h2>
+    <h3>The claim code isn’t accepted</h3>
+    <p>Copy it again from Railway → Variables, without spaces. If you claimed already, sign in instead: the code stops working once your Little Dipper has an owner.</p>
+    <h3>The address doesn’t load</h3>
+    <p>Check the deployment is active in Railway, and that the address matches Settings → Networking exactly.</p>
+    <h3>It keeps restarting</h3>
+    <p>Open the deployment’s <strong>Logs</strong> in Railway. Make sure the volume is attached at <code>/data</code> and <code>LD_KEYSTORE_KEY</code> hasn’t been changed. Still stuck? Ask the person who invited you, and include the last lines of the log.</p>
+  </article>
+</Base>

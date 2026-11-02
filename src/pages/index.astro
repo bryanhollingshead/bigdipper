@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Little Dipper: your life's records, on a server you own" description="Little Dipper keeps your documents, records and dates in one place, on your own server, and shares exactly what you choose with people you know.">
+  <div class="wrap hero">
+    <div class="kicker">Little Dipper · friends and family beta</div>
+    <h1>Your life’s paperwork, in one place you own.</h1>
+    <p class="lede">
+      Little Dipper keeps your documents, records and important dates together, on a small server that belongs to you.
+      Share exactly what you choose with the people you know, and take it back whenever you like.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary btn-lg" href={`${base}/get-started`}>Get your Little Dipper</a>
+      <a class="btn btn-secondary btn-lg" href="#how">How it works</a>
+    </div>
+  </div>
+
+  <section class="wrap">
+    <div class="kicker">Useful on day one, just for you</div>
+    <h2>Everything you’re always looking for</h2>
+    <div class="grid" style="margin-top: 20px">
+      <div class="tile"><h3>Records of your life</h3><p>Addresses, jobs, schooling, IDs, insurance, vehicles, pets and more, with when each one applied. The forms that ask “every address for the last five years” stop being a scramble.</p></div>
+      <div class="tile"><h3>Documents with them</h3><p>Scan or upload the passport, the policy, the title, and keep it with the record it belongs to.</p></div>
+      <div class="tile"><h3>Dates that matter</h3><p>A calendar with your events plus the dates already in your records: birthdays, renewals, passport expiry, warranty ends.</p></div>
+      <div class="tile"><h3>Receipts that count</h3><p>Keep receipts for taxes, returns and warranties, and find them when you need them.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="band">
+      <div class="kicker">Then, with people you know</div>
+      <h2>Share what you choose. Take it back any time.</h2>
+      <p class="lede" style="font-size: 18px">
+        Connect your Little Dipper with family and friends who have one. Give your partner your insurance details, your sister your new address,
+        your accountant a link to last year’s tax return. Each share is yours to change or end, and you can see who looked at what.
+      </p>
+      <p class="note">There’s no public directory and no feed. People connect only with people they already know.</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="how">
+    <div class="kicker">How it works</div>
+    <h2>Your own server, without being a server person</h2>
+    <ol class="steps" style="margin-top: 20px; max-width: 760px">
+      <li><div><h3>Start one in a few minutes</h3><p>One button sets up your Little Dipper with a hosting company, Railway. You pay them directly, about $5 a month. Big Dipper doesn’t charge you anything.</p></div></li>
+      <li><div><h3>Claim it with your passkey</h3><p>Your fingerprint or face unlocks it. No password to forget.</p></div></li>
+      <li><div><h3>It keeps itself up to date</h3><p>New versions install overnight, after a backup.</p></div></li>
+      <li><div><h3>Keep a copy at home</h3><p>Little Dipper reminds you to save backups to your own computer, and your recovery kit lets you move it to a new server at any time.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="wrap">
+    <div class="kicker">Honest about limits</div>
+    <h2>What to know before you start</h2>
+    <ul class="honest" style="max-width: 760px">
+      <li><strong>This is a beta</strong> for friends and family. Expect rough edges, and tell us about them.</li>
+      <li><strong>Your server, your responsibility.</strong> Keep your recovery codes and recovery kit somewhere safe. Nobody, including us, can unlock your Little Dipper without them.</li>
+      <li><strong>The hosting company runs the hardware.</strong> Your data is encrypted where it matters most, but whoever runs a server can physically reach it. You can move to another host or a device at home whenever you like.</li>
+      <li><strong>Big Dipper never sees your data.</strong> This site has no accounts and no database. It points you to the tools and gets out of the way.</li>
+    </ul>
+    <div class="actions"><a class="btn btn-primary btn-lg" href={`${base}/get-started`}>Get your Little Dipper</a></div>
+  </section>
+</Base>

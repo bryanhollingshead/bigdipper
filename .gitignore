@@ -1,0 +1,8 @@
+node_modules
+dist
+.astro
+.env*
+.DS_Store
+# Plans and business notes live in Linear, never in this public repo.
+plans
+docs/plans
