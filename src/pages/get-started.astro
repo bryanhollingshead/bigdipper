@@ -30,9 +30,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <li>
           <div>
             <h3>Set it up on Railway</h3>
-            <p>Railway asks you to sign up (or sign in), then builds your Little Dipper. It takes about two minutes.</p>
+            <p>Railway asks you to sign up (or sign in). Then click <strong>Deploy</strong>: you don’t need to change anything. It takes about two minutes.</p>
             {RAILWAY_TEMPLATE_URL
-              ? <p style="margin-top: 14px"><a class="btn btn-primary btn-lg" href={RAILWAY_TEMPLATE_URL} target="_blank" rel="noopener">Deploy on Railway</a></p>
+              ? <p style="margin-top: 14px"><a id="deploy" class="btn btn-primary btn-lg" href={RAILWAY_TEMPLATE_URL} target="_blank" rel="noopener">Deploy on Railway</a></p>
               : <p class="note" style="margin-top: 10px"><span class="tag tag-accent">Almost ready</span> The Railway button arrives with the first release. Ask the person who invited you.</p>}
           </div>
         </li>
@@ -57,8 +57,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </li>
         <li>
           <div>
-            <h3>Claim it</h3>
-            <p>Your Little Dipper asks for its <strong>claim code</strong>. Only you can see it: in Railway, open your Little Dipper, then <strong>Variables → LD_CLAIM_TOKEN</strong>, and copy the value. Then add a passkey and save your recovery codes.</p>
+            <h3>Make it yours</h3>
+            <p>Your Little Dipper opens already knowing it’s you. Add your name and a passkey, save your recovery codes, and you’re in.</p>
+            <p class="note" style="margin-top: 8px">How does it know? This page made a private claim code in your browser and gave it to Railway with your setup. It never leaves your browser and Railway. If you set up from a different device, you’ll be asked for the code instead: in Railway, open your Little Dipper, then <strong>Variables → LD_CLAIM_TOKEN</strong>.</p>
             <p id="claim" style="margin-top: 12px" hidden><a id="claim-link" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Open my Little Dipper</a></p>
           </div>
         </li>
@@ -75,6 +76,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <script>
   // Everything here stays in this browser. Big Dipper has no server and never sees your address or code.
   const KEY = 'bigdipper.setup.address';
+  const CODE = 'bigdipper.setup.code';
+
+  // The claim code: made here, handed to Railway in the Deploy link (it becomes LD_CLAIM_TOKEN), and used to
+  // open the new Little Dipper already verified. One per browser until the owner starts over.
+  const code = localStorage.getItem(CODE) || (() => {
+    const bytes = crypto.getRandomValues(new Uint8Array(24));
+    const c = 'bd' + Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+    localStorage.setItem(CODE, c);
+    return c;
+  })();
+  const deploy = document.getElementById('deploy') as HTMLAnchorElement | null;
+  if (deploy) {
+    const u = new URL(deploy.href);
+    u.searchParams.set('LD_CLAIM_TOKEN', code);
+    deploy.href = u.toString();
+  }
   const form = document.getElementById('check') as HTMLFormElement;
   const input = document.getElementById('addr') as HTMLInputElement;
   const result = document.getElementById('result')!;
@@ -101,7 +118,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     localStorage.setItem(KEY, addr);
     if (d.claimed) return say('This Little Dipper already has an owner. If it’s yours, sign in at its address.');
     say('It’s ready, and waiting for you to claim it.');
-    link.href = `${addr}/claim`;
+    link.href = `${addr}/claim?token=${encodeURIComponent(code)}`;
     claim.hidden = false;
   }
 
