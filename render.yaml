@@ -1,0 +1,18 @@
+# Render Blueprint: Big Dipper is a static site (no server, no database).
+# Render → New → Blueprint → this repo. Every push to main redeploys.
+services:
+  - type: web
+    name: bigdipper
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+    headers:
+      - path: /_astro/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff

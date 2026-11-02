@@ -10,11 +10,11 @@ Big Dipper never sees anyone's data. The site is static: no accounts, no databas
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321/bigdipper
+npm run dev      # http://localhost:4321
 npm run build    # static site in dist/
 ```
 
-Pushes to `main` publish to GitHub Pages (`.github/workflows/deploy.yml`).
+Render hosts the site as a static site (`render.yaml`) and redeploys on every push to `main`. GitHub Actions checks and builds every push and pull request (`.github/workflows/ci.yml`).
 
 ## Look and feel
 
