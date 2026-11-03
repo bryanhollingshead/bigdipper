@@ -4,11 +4,11 @@ import HostingChoice from '../components/HostingChoice.astro';
 import { RAILWAY_MONTHLY, RAILWAY_TEMPLATE_URL } from '../lib/config';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<Base title="Get your Little Dipper" description="Set up your own Little Dipper on Railway in a few minutes, then claim it with your passkey.">
+<Base title="Get your Little Dipper" description="Set up your own Little Dipper on Railway in a few minutes, then make it yours with a passkey.">
   <div class="narrow hero" style="padding-bottom: 10px">
     <div class="kicker">Get your Little Dipper</div>
     <h1 style="font-size: clamp(36px, 5vw, 52px)">Your own Little Dipper in about ten minutes.</h1>
-    <p class="lede">You’ll set up a small server with Railway, a hosting company, then claim it so it’s yours. This page walks you through it and remembers where you are if you leave.</p>
+    <p class="lede">You’ll set up a small server with Railway, a hosting company, then claim it so it’s yours. This page walks you through it.</p>
   </div>
 
   <div class="narrow">
@@ -18,14 +18,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <h2>Before you start</h2>
       <ul class="prose">
         <li><strong>Cost:</strong> {RAILWAY_MONTHLY} a month, paid to Railway with your own card. Big Dipper doesn’t charge you anything.</li>
-        <li><strong>You’ll need:</strong> an email address, a card for Railway, and a phone or computer that can use a passkey (fingerprint, face or device PIN).</li>
+        <li><strong>You’ll need:</strong> an email address, a card for Railway, and a phone or computer that can use a passkey (your face, fingerprint, device PIN or a security key).</li>
         <li><strong>It’s yours:</strong> the server lives in your own Railway account. Big Dipper can’t see it or your data, and doesn’t need to.</li>
         <li><strong>If you stop paying Railway</strong>, they shut the server down. Save a backup to your computer first, and you can bring it back anywhere.</li>
       </ul>
     </section>
 
     <section style="padding-top: 8px">
-      <h2>Four steps</h2>
+      <h2>Three steps</h2>
       <ol class="steps" style="margin-top: 22px">
         <li>
           <div>
@@ -38,29 +38,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </li>
         <li>
           <div>
-            <h3>Find your new address</h3>
-            <p>In Railway, open your Little Dipper, then <strong>Settings → Networking</strong>. Your address ends in <code>.up.railway.app</code>.</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <h3>Check that it’s ready</h3>
-            <form id="check" class="field" style="margin-top: 10px">
-              <label for="addr">Your Little Dipper’s address</label>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap">
-                <input id="addr" class="input" style="flex: 1; min-width: 240px; min-height: 44px" placeholder="something.up.railway.app" autocomplete="off" spellcheck="false" />
-                <button class="btn btn-primary" type="submit">Check</button>
-              </div>
-            </form>
-            <p id="result" class="note" role="status" style="margin-top: 10px"></p>
+            <h3>Open your Little Dipper</h3>
+            <p>When Railway shows your Little Dipper as active, click its link. It ends in <code>.up.railway.app</code>. Bookmark it: it’s where you’ll use your Little Dipper from now on.</p>
           </div>
         </li>
         <li>
           <div>
             <h3>Make it yours</h3>
-            <p>Your Little Dipper opens already knowing it’s you. Add your name and a passkey, save your recovery codes, and you’re in.</p>
-            <p class="note" style="margin-top: 8px">How does it know? This page made a private claim code in your browser and gave it to Railway with your setup. It never leaves your browser and Railway. If you set up from a different device, you’ll be asked for the code instead: in Railway, open your Little Dipper, then <strong>Variables → LD_CLAIM_TOKEN</strong>.</p>
-            <p id="claim" style="margin-top: 12px" hidden><a id="claim-link" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Open my Little Dipper</a></p>
+            <p>Click <strong>Finish setting up</strong>. Your Little Dipper will already know it’s you. Add your name and a passkey (your face, fingerprint, device PIN or a security key), save your recovery codes, and you’re in.</p>
+            <p class="note" style="margin-top: 8px">How does it know? This page made a private claim code in your browser and gave it to Railway with your setup. It goes only to Railway and to your Little Dipper. Set up from a different device? You’ll be asked for the code instead: in Railway, open your Little Dipper, then <strong>Variables → LD_CLAIM_TOKEN</strong>.</p>
           </div>
         </li>
       </ol>
@@ -74,12 +60,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </Base>
 
 <script>
-  // Everything here stays in this browser. Big Dipper has no server and never sees your address or code.
-  const KEY = 'bigdipper.setup.address';
+  // The claim code: made here, handed to Railway in the Deploy link (it becomes LD_CLAIM_TOKEN). The new
+  // Little Dipper's Finish setting up button comes back to /continue, which sends the owner in with it.
+  // One per browser until the owner starts over. Big Dipper has no server and never sees it.
   const CODE = 'bigdipper.setup.code';
-
-  // The claim code: made here, handed to Railway in the Deploy link (it becomes LD_CLAIM_TOKEN), and used to
-  // open the new Little Dipper already verified. One per browser until the owner starts over.
   const code = localStorage.getItem(CODE) || (() => {
     const bytes = crypto.getRandomValues(new Uint8Array(24));
     const c = 'bd' + Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
@@ -92,43 +76,4 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     u.searchParams.set('LD_CLAIM_TOKEN', code);
     deploy.href = u.toString();
   }
-  const form = document.getElementById('check') as HTMLFormElement;
-  const input = document.getElementById('addr') as HTMLInputElement;
-  const result = document.getElementById('result')!;
-  const claim = document.getElementById('claim')!;
-  const link = document.getElementById('claim-link') as HTMLAnchorElement;
-
-  const origin = (raw: string) => {
-    const s = raw.trim().replace(/\/+$/, '');
-    if (!s) return null;
-    try { return new URL(/^https?:\/\//.test(s) ? s : `https://${s}`).origin; } catch { return null; }
-  };
-
-  const say = (text: string) => { result.textContent = text; };
-
-  async function check(addr: string) {
-    claim.hidden = true;
-    say('Checking…');
-    let d: { kind?: string; claimed?: boolean } | null = null;
-    try {
-      const r = await fetch(`${addr}/.well-known/little-dipper`, { cache: 'no-store' });
-      d = r.ok ? await r.json() : null;
-    } catch { d = null; }
-    if (!d || d.kind !== 'node') return say('No Little Dipper answers there yet. If you just set it up, give it a minute and check again. Otherwise, check the address in Railway → Settings → Networking.');
-    localStorage.setItem(KEY, addr);
-    if (d.claimed) return say('This Little Dipper already has an owner. If it’s yours, sign in at its address.');
-    say('It’s ready, and waiting for you to claim it.');
-    link.href = `${addr}/claim?token=${encodeURIComponent(code)}`;
-    claim.hidden = false;
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const addr = origin(input.value);
-    if (!addr) return say('That doesn’t look like a web address. It usually ends in .up.railway.app.');
-    void check(addr);
-  });
-
-  const saved = localStorage.getItem(KEY);
-  if (saved) { input.value = saved.replace(/^https:\/\//, ''); void check(saved); }
 </script>

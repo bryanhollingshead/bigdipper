@@ -23,15 +23,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </ul>
     <p>Wait until Railway shows the deployment as active, about two minutes.</p>
 
-    <h2>3. Find your address</h2>
-    <p>Open your Little Dipper in Railway, then <strong>Settings → Networking</strong>. The address ends in <code>.up.railway.app</code>. Bookmark it: it’s where you’ll use your Little Dipper from now on.</p>
+    <h2>3. Open it</h2>
+    <p>Click your Little Dipper’s link in Railway. It ends in <code>.up.railway.app</code>, and it’s on your Little Dipper’s box in the project (also under <strong>Settings → Networking</strong>). Bookmark it: it’s where you’ll use your Little Dipper from now on.</p>
 
     <h2>4. Claim it</h2>
     <ol>
-      <li>Open your address. Little Dipper says it’s waiting for its owner.</li>
-      <li>In Railway, open <strong>Variables</strong>, reveal <code>LD_CLAIM_TOKEN</code> and copy it.</li>
-      <li>Paste it into Little Dipper and continue. The code works until you claim, so there’s no rush.</li>
-      <li>Enter your name and email, then <strong>create a passkey</strong>: your fingerprint, face or device PIN is how you sign in.</li>
+      <li>Your Little Dipper says it’s waiting for its owner. Click <strong>Finish setting up</strong>.</li>
+      <li>Big Dipper shows your Little Dipper’s address. Check it matches Railway’s, then continue. Big Dipper kept your claim code in this browser when you clicked Deploy, so your Little Dipper knows it’s you.</li>
+      <li>Set up from a different browser or device? In Railway, open <strong>Variables</strong>, reveal <code>LD_CLAIM_TOKEN</code>, copy it, and paste it into your Little Dipper instead. The code works until you claim, so there’s no rush.</li>
+      <li>Enter your name and email, then <strong>create a passkey</strong>: you’ll sign in with your face, fingerprint, device PIN or a security key. No password to forget.</li>
       <li><strong>Save your recovery codes</strong> somewhere safe, like a password manager. They’re how you get in if you lose your device.</li>
     </ol>
 
@@ -49,6 +49,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <p>In Little Dipper, open <strong>Contacts → Add</strong> and send an invite link to a friend who has a Little Dipper. You choose exactly what each person can see, and can change it any time.</p>
 
     <h2>When something doesn’t work</h2>
+    <h3>Finish setting up says this browser doesn’t have your claim code</h3>
+    <p>You clicked Deploy in a different browser or device. Finish there, or paste the code from Railway → Variables → <code>LD_CLAIM_TOKEN</code> into your Little Dipper.</p>
     <h3>The claim code isn’t accepted</h3>
     <p>Copy it again from Railway → Variables, without spaces. If you claimed already, sign in instead: the code stops working once your Little Dipper has an owner.</p>
     <h3>The address doesn’t load</h3>

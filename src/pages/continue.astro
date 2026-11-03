@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Finish setting up · Big Dipper" description="Continue to your new Little Dipper with the claim code this browser kept for you.">
+  <div class="narrow hero">
+    <div class="kicker">Finish setting up</div>
+    <h1 id="title" style="font-size: clamp(32px, 5vw, 44px)">Checking your Little Dipper…</h1>
+    <p id="text" class="lede" role="status"></p>
+    <p id="go-wrap" style="margin-top: 20px" hidden><a id="go" class="btn btn-primary btn-lg">Continue to my Little Dipper</a></p>
+    <p class="note" style="margin-top: 28px">Stuck? The <a href={`${base}/guide/railway`}>Railway guide</a> covers each step.</p>
+  </div>
+</Base>
+
+<script>
+  // A Little Dipper that isn't claimed yet sends its owner here with its own address. This browser kept the
+  // claim code it made on Get Started, so we send the owner back with it. The code never leaves this browser
+  // except to go to that address, and only after the owner sees which address it is.
+  const CODE = 'bigdipper.setup.code';
+  const title = document.getElementById('title')!;
+  const text = document.getElementById('text')!;
+  const goWrap = document.getElementById('go-wrap')!;
+  const go = document.getElementById('go') as HTMLAnchorElement;
+  const show = (h: string, t: string) => { title.textContent = h; text.textContent = t; };
+
+  const nodeOrigin = (() => {
+    try {
+      const u = new URL(new URLSearchParams(location.search).get('node') || '');
+      const local = u.hostname === 'localhost' || u.hostname === '127.0.0.1';
+      return u.protocol === 'https:' || (local && u.protocol === 'http:') ? u.origin : null;
+    } catch { return null; }
+  })();
+
+  async function run() {
+    if (!nodeOrigin) return show('Something’s missing', 'Open your Little Dipper and click Finish setting up from there.');
+    const code = localStorage.getItem(CODE);
+    if (!code) {
+      return show('This browser doesn’t have your claim code',
+        'Did you set up from a different browser or device? Finish there, or go back to your Little Dipper and paste the code from Railway: open your Little Dipper, then Variables → LD_CLAIM_TOKEN.');
+    }
+    let d: { kind?: string; claimed?: boolean } | null = null;
+    try {
+      const r = await fetch(`${nodeOrigin}/.well-known/little-dipper`, { cache: 'no-store' });
+      d = r.ok ? await r.json() : null;
+    } catch { d = null; }
+    if (!d || d.kind !== 'node') return show('That isn’t a Little Dipper', `Nothing at ${nodeOrigin.replace(/^https?:\/\//, '')} answers as a Little Dipper. Open yours from Railway and try again.`);
+    if (d.claimed) return show('This Little Dipper already has an owner', 'If it’s yours, sign in at its address.');
+    show('Ready when you are', `Continue to ${nodeOrigin.replace(/^https?:\/\//, '')}. Check it’s the address Railway shows for your Little Dipper.`);
+    go.href = `${nodeOrigin}/claim?token=${encodeURIComponent(code)}`;
+    goWrap.hidden = false;
+  }
+  void run();
+</script>
